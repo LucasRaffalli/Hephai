@@ -140,7 +140,25 @@ form {
 
 
 }
+.buy__info{
+    display: flex;
+    flex-direction: column;
 
+    select{
+        border: var(--button-border);
+        background-color: var(--button-bgcolor);
+        border-radius: 6px;
+        &:hover{
+            background-color: var(--button-hover-bgcolor);
+        }
+        option{
+            background-color: var(--button-bgcolor);
+            border: var(--button-border);
+            border-radius: 6px;
+        
+        }
+    }
+}
 .right {
     // overflow: auto;
     padding: 0.25rem;
@@ -266,6 +284,13 @@ form {
                 display: flex;
                 justify-content: space-between;
                 gap: 1rem;
+
+                .modalite{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2rem;
+                }
+                
             }
         }
 

@@ -7,6 +7,7 @@ import '@styles/invoiceFrom.scss';
 import { Client } from '../../typings/client';
 import canvg from 'canvg';
 import icons from './icons';
+// import { Button, Flex } from '@radix-ui/themes';
 
 
 const InvoiceForm: React.FC = () => {
@@ -61,6 +62,9 @@ const InvoiceForm: React.FC = () => {
     const [showAddClientModal, setShowAddClientModal] = useState(false);
     const [updatedProduct, setUpdatedProduct] = useState<Record<string, any> | null>(null);
 
+    const [paymentMethod, setPaymentMethod] = useState('');
+    const [bankDetails, setBankDetails] = useState('');
+    const [paypalEmail, setPaypalEmail] = useState('');
 
 
     //! HEADER --------------------------------------------------------------------------------------------------------------------------------
@@ -90,6 +94,7 @@ const InvoiceForm: React.FC = () => {
     useEffect(() => {
         localStorage.setItem('headers', JSON.stringify(headers));
     }, [headers]);
+
 
     //! PRODUCT --------------------------------------------------------------------------------------------------------------------------------
     const handleAddProduct = (event: React.FormEvent) => {
@@ -129,6 +134,17 @@ const InvoiceForm: React.FC = () => {
         setFormattedInvoiceNumber(newFormattedInvoiceNumber);
     }, [invoiceNumber]);
 
+    //! BANK DETAILS --------------------------------------------------------------------------------------------------------------------------
+    const handlePaypalEmailChange = (e: any) => {
+        setPaypalEmail(e.target.value);
+    }
+    const handlePaymentMethodChange = (e: any) => {
+        setPaymentMethod(e.target.value);
+    }
+    const handleBankDetailsChange = (e: any) => {
+        setBankDetails(e.target.value);
+    }
+
     //! CLIENT --------------------------------------------------------------------------------------------------------------------------------
     useEffect(() => {
         localStorage.setItem('clients', JSON.stringify(clients));
@@ -153,6 +169,8 @@ const InvoiceForm: React.FC = () => {
     };
     const date = new Date();
     const formattedDate = `Date ${date.getDate()} ${date.toLocaleString('fr-FR', { month: 'long' })} ${date.getFullYear()}`;
+
+
     //! MODALS -------------------------------------------------------------------------------------------------------------------------------------
     const handleAddClientFromModal = (event: React.FormEvent) => {
         event.preventDefault();
@@ -163,6 +181,7 @@ const InvoiceForm: React.FC = () => {
         setMailClient('');
         setShowAddClientModal(false);
     }; const [productToEdit, setProductToEdit] = useState<number | null>(null);
+
 
     //! OTHERS FONCTIONNALITES ----------------------------------------------------------------------------------------------------------------------
     const handleEditProduct = (index: number) => {
@@ -192,6 +211,8 @@ const InvoiceForm: React.FC = () => {
         setShowEditProductModal(true);
         handleEditProduct(index);
     };
+
+
     //! DOCUMENT PDF --------------------------------------------------------------------------------------------------------------------------------
     const exportDocument = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -268,7 +289,10 @@ const InvoiceForm: React.FC = () => {
             tableWidth: 'auto',
             head: [headers],
             body: products.map((product: Record<string, string>) => headers.map(header => product[header])),
-
+            headStyles: {
+                fillColor: [22, 22, 22], // Couleur de fond en noir
+                textColor: [255, 255, 255], // Couleur du texte en blanc
+            },
             didDrawPage: (data) => {
                 const textY = Math.max(240, data.cursor.y + 25);
                 const rectWidth = 100;
@@ -279,8 +303,12 @@ const InvoiceForm: React.FC = () => {
                 const delayText = showMaxDay ? doc.splitTextToSize(`Délai de règlement : ${maxDay} jours`, rectWidth - 2 * padding) : [];
                 const delayPaymentText = showTextDelay ? doc.splitTextToSize(`En cas de retard de paiement : ${textDelay}`, rectWidth - 2 * padding) : [];
 
+                const paymentMethodText = paymentMethod === 'bankTransfer' ? 'virement bancaire' : 'PayPal';
+                const paymentInfoText = paymentMethod === 'bankTransfer' ? doc.splitTextToSize(`IBAN: ${bankDetails}`, rectWidth - 2 * padding) : doc.splitTextToSize(`${paypalEmail}`, rectWidth - 2 * padding);
 
-                const textHeight = conditionsText.length + delayText.length + delayPaymentText.length;
+                const fullPaymentText = doc.splitTextToSize(`Ce paiement sera effectué par ${paymentMethodText}. ${paymentInfoText}`, rectWidth - 2 * padding);
+
+                const textHeight = conditionsText.length + delayText.length + delayPaymentText.length + paymentInfoText.length + fullPaymentText.length;
 
                 const rectHeight = textHeight * 5 + 2 * padding;
 
@@ -289,6 +317,7 @@ const InvoiceForm: React.FC = () => {
 
                 doc.text(delayText, 10 + padding, textY + 0 + padding);
                 doc.text(delayPaymentText, 10 + padding, textY + 5 + padding);
+                doc.text(fullPaymentText, 10 + padding, textY + 10 + padding);
 
                 const pageWidth = doc.internal.pageSize.getWidth();
 
@@ -326,7 +355,7 @@ const InvoiceForm: React.FC = () => {
 
         doc.text(footerTextAuthor, textX, pageHeight - 10);
 
-        doc.save('facture.pdf');
+        doc.save(`Facture_${companyName}_${numberOfInvoice}.pdf`);
         setInvoiceNumber(invoiceNumber + 1);
     };
 
@@ -565,15 +594,32 @@ const InvoiceForm: React.FC = () => {
                         <section className='footer'>
                             <div className='container__top'>
 
+                                <div className='modalite'>
+                                    <div>
 
-                                <div>
-                                    <div>
-                                        <input type="number" value={maxDay} onChange={e => setMaxDay(e.target.value)} disabled={!showMaxDay} placeholder='Délai de règlement:' />
-                                        <button onClick={() => setShowMaxDay(!showMaxDay)}>Activer/Désactiver</button>
+                                        <div>
+                                            <input type="number" value={maxDay} onChange={e => setMaxDay(e.target.value)} disabled={!showMaxDay} placeholder='Délai de règlement:' />
+                                            <button onClick={() => setShowMaxDay(!showMaxDay)}>Activer/Désactiver</button>
+                                        </div>
+                                        <div>
+                                            <input type="textarea perfectHight" value={textDelay} onChange={e => setTextDelay(e.target.value)} disabled={!showTextDelay} placeholder='En cas de retard de paiement :' />
+                                            <button onClick={() => setShowTextDelay(!showTextDelay)}>Activer/Désactiver</button>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <input type="textarea perfectHight" value={textDelay} onChange={e => setTextDelay(e.target.value)} disabled={!showTextDelay} placeholder='En cas de retard de paiement :' />
-                                        <button onClick={() => setShowTextDelay(!showTextDelay)}>Activer/Désactiver</button>
+
+                                    <div className='buy__info'>
+                                        <select value={paymentMethod} onChange={handlePaymentMethodChange} >
+                                            <option value="">Sélectionnez une méthode de paiement</option>
+                                            <option value="bankTransfer">Virement bancaire</option>
+                                            <option value="paypal">PayPal</option>
+                                        </select>
+
+                                        {paymentMethod === 'bankTransfer' && (
+                                            <input type="text" value={bankDetails} onChange={handleBankDetailsChange} placeholder="Entrez votre RIB" />
+                                        )}
+                                        {paymentMethod === 'paypal' && (
+                                            <input type="text" value={paypalEmail} onChange={handlePaypalEmailChange} placeholder="Entrez votre adresse e-mail PayPal" />
+                                        )}
                                     </div>
                                 </div>
                                 <div className='calcul'>

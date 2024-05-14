@@ -31,12 +31,29 @@
     "forge": "./tools/forge/forge.config.js"
   },
   "build": {
-    "appId": "com.example.myApp",
+    "appId": "net.aurora.hephai",
     "win": {
+      "target": [
+        "nsis"
+      ],
       "icon": "assets/images/appIcon.ico"
     },
     "mac": {
       "icon": "assets/images/appIcon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "assets/images/appIcon.ico",
+      "uninstallerIcon": "assets/images/uninstallerIcon.ico",
+      "uninstallDisplayName": "Hephai_uninstaller",
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Hephai",
+      "deleteAppDataOnUninstall": true,
+      "license": "LICENSE.md",
+      "include": "build/installer.nsh"
     }
   },
   "devDependencies": {
@@ -59,6 +76,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.9.0",
     "electron": "^28.1.2",
+    "electron-wix-msi": "^5.1.3",
     "eslint": "^8.56.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.29.1",
@@ -75,6 +93,8 @@
     "webpack": "^5.89.0"
   },
   "dependencies": {
+    "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/themes": "^3.0.3",
     "@types/jspdf": "^2.0.0",
     "canvg": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",

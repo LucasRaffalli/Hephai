@@ -13,7 +13,12 @@ module.exports = {
     appCopyright: '©2024 Lucas Raffalli',
     // Set application icon
     icon: path.resolve('assets/images/appIcon.ico'),
+    "ui": {
+      "chooseDirectory": true
+    }
+
   },
+
   // Forge Makers
   makers: [
     {
@@ -22,8 +27,22 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {
         name: 'Hephai',
+        setupIcon: path.resolve(rootDir, 'assets/images/appIcon.ico'),
+        oneClick: false,
+        installerIcon: path.resolve(rootDir, 'assets/images/appIcon.ico'),
+        uninstallerIcon: path.resolve(rootDir, 'assets/images/uninstallerIcon.ico'),
+        uninstallDisplayName: 'Hephai_uninstaller',
+        allowElevation: true,
+        allowToChangeInstallationDirectory: true,
+        createDesktopShortcut: true,
+        createStartMenuShortcut: true,
+        shortcutName: 'Hephai',
+        deleteAppDataOnUninstall: true,
+        license: path.resolve(rootDir, 'LICENSE.md'),
+        include: path.resolve(rootDir, 'build/installer.nsh'),
       },
     },
+
     {
       // The Zip target builds basic .zip files containing your packaged application.
       // There are no platform specific dependencies for using this maker and it will run on any platform.
