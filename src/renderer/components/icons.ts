@@ -17,8 +17,10 @@ import add_client from '@assets/icons/svg/add_client.svg'
 import pdfExport_icon from '@assets/icons/svg/pdf_export_icon.svg'
 import edit_icon from '@assets/icons/svg/edit_icon.svg'
 import add_colonne from '@assets/icons/svg/add_colonne.svg'
+import setting from '@assets/icons/svg/setting.svg'
 
 export default {
+  setting,
   add_colonne,
   edit_icon,
   pdfExport_icon,
@@ -39,5 +41,4 @@ export default {
   webpack,
   license,
 };
-
 

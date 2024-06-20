@@ -1,0 +1,163 @@
+@import 'settings.scss';
+
+#container {
+    // background-color: rgba(255, 0, 0, 0.509);
+    // padding: 1rem;
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    #container__inner__1 {
+        padding: $space_05;
+        display: flex;
+        gap: $space_05;
+        flex-direction: column;
+        width: 100%;
+        // background-color: blue;
+
+        .inner__top {
+            padding: $p_05;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 11;
+            border-radius: $border_r;
+            background-color: $color_w3;
+            border: $color_w4b 2px solid;
+            box-shadow: $shadow_perfect ;
+            min-height: 3rem;
+
+            img {
+                height: 100%;
+                width: 2.5rem;
+            }
+        }
+
+        .inner__bottom {
+            display: flex;
+            gap: $space_05;
+            // border-radius: $border_r;
+            overflow: hidden;
+            height: 100%;
+            // background-color: purple;
+
+            .container__center,
+            .container__left,
+            .container__right {
+                // padding: $space_05;
+            }
+
+            .container__left {
+
+                display: flex;
+                flex-direction: column;
+                gap: $space_05;
+                // width: 100%;
+                width: clamp(285px, 100px, 285px);
+                max-width: 285px;
+                // background-color: royalblue;
+
+                .client__information {
+                    border-radius: $border_r;
+                    height: 100%;
+                    padding: $p_05;
+                    background-color: $color_w3;
+                    border: $color_w4b 2px solid;
+                    box-shadow: $shadow_perfect ;
+                    overflow: hidden;
+
+                    .title {
+                        font-size: clamp(1.5vh, 1.7vh, 2.5vh);
+                        text-align: center;
+                        width: 100%;
+                        font-weight: 500;
+                    }
+
+                    .list__client {
+                        border-radius: $border_r;
+                        height: 93%;
+                        overflow-y: auto;
+                    }
+                }
+
+                .action__button {
+                    border-radius: $border_r;
+                    padding: $p_05;
+                    min-height: fit-content;
+                    background-color: $color_w3;
+                    border: $color_w4b 2px solid;
+                    box-shadow: $shadow_perfect ;
+
+                    .button__bottom {
+                        width: 100%;
+                        display: flex;
+                    }
+                }
+            }
+
+            .mutable__container {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                gap: $space_05;
+                // background-color: $color_accent1;
+
+                .container__center {
+                    border-radius: $border_r;
+                    width: 100%;
+                    background-color: $color_w3;
+                    border: $color_w4b 2px solid;
+                    box-shadow: $shadow_perfect ;
+                }
+
+                .container__right {
+                    border-radius: $border_r;
+                    width: clamp(285px, 100px, 285px);
+                    max-width: 285px;
+                    background-color: $color_w3;
+                    border: $color_w4b 2px solid;
+                    box-shadow: $shadow_perfect ;
+                }
+            }
+        }
+    }
+}
+#component__container{
+    display: flex;
+    width: 100%;
+    .component__inner{
+        display: flex;
+        gap: $space_05;
+        width: 100%;
+    }
+}
+.card__base {
+    padding: $p_05;
+    background-color: $color_w1;
+    border-radius: $border_r;
+
+
+    .card__inner {
+        .card__top {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+
+            .card__title {
+                text-transform: uppercase;
+                font-weight: 500;
+                font-size: clamp(1.5vh, 1.7vh, 2.5vh);
+            }
+        }
+
+        .card__bottom {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+        }
+    }
+}

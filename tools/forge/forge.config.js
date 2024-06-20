@@ -26,6 +26,8 @@ module.exports = {
       // Windows applications and is therefore the most user friendly you can get.
       name: '@electron-forge/maker-squirrel',
       config: {
+        autoLaunch: false,
+        loadingGif: './assets/gif/splash_hephai.gif',
         name: 'Hephai',
         setupIcon: path.resolve(rootDir, 'assets/images/appIcon.ico'),
         oneClick: false,
@@ -40,6 +42,7 @@ module.exports = {
         deleteAppDataOnUninstall: true,
         license: path.resolve(rootDir, 'LICENSE.md'),
         include: path.resolve(rootDir, 'build/installer.nsh'),
+        
       },
     },
 
